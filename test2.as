@@ -2,6 +2,8 @@
 class Test2 {
   static function main() {
     var receivingLC = new LocalConnection();
-    receivingLC.send("test_channel", "test_method");
+    while(true) {
+      receivingLC.send("test_channel", "test_method");
+    }
   }
 }

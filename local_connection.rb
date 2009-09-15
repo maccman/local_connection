@@ -11,6 +11,9 @@ class LocalConnection
     module Const
       eval(FFI::ConstGenerator.new(nil, :required => true) do |gen|
         gen.include 'semaphore.h'
+        gen.include 'sys/types.h'
+        gen.include 'sys/stat.h'
+        gen.include 'fcntl.h'
         gen.const 'O_CREAT'
         gen.const 'S_IRUSR'
         gen.const 'S_IWUSR'
@@ -31,7 +34,7 @@ class LocalConnection
     
     attr_reader :pointer
     def initialize(name)
-      @pointer = sem_open(name, O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH, 10)
+      @pointer = sem_open(name, O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH, 10) # 0666
       @pointer = FFI::AutoPointer.new(@pointer, self.class.method(:release))
     end
     
